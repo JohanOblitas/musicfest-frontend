@@ -1,8 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Nav, Tab, Form, Button } from "react-bootstrap";
-import BannerTest01 from "../resources/images/Banner.jpg"; // Test
-import BannerTest02 from "../resources/images/Banner2.jpg"; // Test
-import BannerTest03 from "../resources/images/Banner3.jpg"; // Test
+import events from './test_data'; // Data de prueba
 
 function ManagerPanel() {
   const username = "usuario"; // Reemplazar posteriormente
@@ -48,7 +46,7 @@ function ManagerPanel() {
   );
 }
 
-// Funciones para los componentes de las diferentes secciones
+// Crear evento
 function CreateEventForm() {
   return (
     <Form>
@@ -188,39 +186,8 @@ function CreateEventForm() {
     </Form>
   );
 }
-
+// Lista de Eventos del Manager
 function EventsList() {
-  // Datos de prueba
-  const events = [
-    {
-      id: 1,
-      title: "Concierto de Rock",
-      date: "2024-07-10",
-      time: "20:00",
-      duration: "2 horas",
-      location: "Estadio Nacional",
-      banner: BannerTest01,
-    },
-    {
-      id: 2,
-      title: "Concierto de Pop",
-      date: "2024-07-15",
-      time: "18:00",
-      duration: "4 horas",
-      location: "Jockey Plaza",
-      banner: BannerTest02,
-    },
-    {
-      id: 3,
-      title: "Concierto de Salsa",
-      date: "2024-07-22",
-      time: "14:00",
-      duration: "3 horas",
-      location: "Parque de las Leyendas",
-      banner: BannerTest03,
-    }
-  ];
-
   return (
     <div>
       <h3>Eventos</h3>
@@ -257,7 +224,7 @@ function EventsList() {
     </div>
   );
 }
-
+// Lista de Eventos del Manager
 function OrganizerInfo() {
   return (
     <div>

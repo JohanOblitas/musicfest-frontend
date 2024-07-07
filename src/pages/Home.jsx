@@ -17,7 +17,7 @@ function Home() {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <Button variant="dark" size="lg" as={Link} to="/concerts">
+          <Button variant="dark" size="lg" as={Link} to="/concerts-list">
             Ver Conciertos
           </Button>
         </div>

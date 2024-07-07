@@ -1,8 +1,20 @@
-import { Container, Navbar, Nav, Form, Button} from "react-bootstrap";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Container, Navbar, Nav, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Logo from "../resources/images/Logo.png"
+import Logo from "../resources/images/Logo.png";
 
 function Header() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim() !== "") {
+      navigate(`/search?query=${searchTerm}`);
+    }
+  };
+
   return (
     <>
       <Navbar bg="light" expand="lg" fixed="top">
@@ -21,18 +33,23 @@ function Header() {
               <Nav.Link as={Link} to="/" className="mx-2">
                 Acerca de
               </Nav.Link>
-              <Nav.Link as={Link} to="/concerts" className="mx-2">
+              <Nav.Link as={Link} to="/concerts-list" className="mx-2">
                 Conciertos
               </Nav.Link>
             </Nav>
-            <Form className="d-flex mx-auto">
+            <Form className="d-flex mx-auto" onSubmit={handleSearch}>
+              {/*Búsqueda de Conciertos*/}
               <Form.Control
                 type="search"
                 placeholder="Buscar conciertos"
                 className="me-2"
                 aria-label="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Button variant="dark" className="bi bi-search"></Button>
+              <Button variant="dark" type="submit">
+                <i className="bi bi-search"></i>
+              </Button>
             </Form>
             <Nav>
               <Nav.Link as={Link} to="/login">
