@@ -12,6 +12,7 @@ import ManagerPanel from './pages/ManagerPanel';
 import SearchResults from "./pages/SearchResults";
 import ConcertsList from "./pages/ConcertsList";
 import ConcertDetails from "./pages/ConcertDetails";
+import BuyTickets from "./pages/BuyTickets";
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
         <Route path="/search" element={<SearchResults />} />
         <Route path="/concerts-list" element={<ConcertsList />} />
         <Route path="/concert-details/:id" element={<ConcertDetails />} />
-        <Route path="/buy-tickets/:id" element={<ConcertDetails />} />
+        <Route path="/buy-tickets/:id" element={<BuyTickets />} />
       </Routes>
       <Footer />
     </div>
