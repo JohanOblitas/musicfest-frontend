@@ -1,12 +1,48 @@
-import React, { useState } from "react";
+import { RUTA_BACKEND } from "../conf";
+import React, { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+  const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const [Email, setEmail] = useState("");
+  const [Contraseña, setContraseña] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (usuarioCorreo = null) => {
+    if (Email && Contraseña) {
+      const ruta =
+        usuarioCorreo == null
+          ? `${RUTA_BACKEND}/Usuarios`
+          : `${RUTA_BACKEND}/Usuarios?email=${usuarioCorreo}`;
+      const resp = await fetch(ruta);
+      const data = await resp.json();
+      const filter = data.filter((element) => {
+        if (element.email === Email && element.contraseña === Contraseña) {
+          return true;
+        }
+        return false;
+      });
+      if (filter.length > 0) {
+        const userData = filter[0];
+        console.log("Good job.")
+        console.log(userData)
+        localStorage.setItem("loggedInUser", JSON.stringify(userData));
+        navigate("/")
+        window.location.reload();
+      } else {
+        setError(true);
+        console.log("Bad job.")
+      }
+    } else {
+      console.error("Favor de llenar todos los campos de fecha.");
+    }
   };
 
   return (
@@ -20,7 +56,14 @@ function Login() {
           <Form>
             <Form.Group controlId="formBasicEmail" className="mb-3">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Ingresa tu email" />
+              <Form.Control
+                type="email"
+                placeholder="Ingresa tu email"
+                value={Email}
+                onChange={(evt) => {
+                  setEmail(evt.target.value);
+                }}
+              />
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword" className="mb-3">
@@ -29,6 +72,10 @@ function Login() {
                 <Form.Control
                   type={showPassword ? "text" : "password"}
                   placeholder="Contraseña"
+                  value={Contraseña}
+                  onChange={(evt) => {
+                    setContraseña(evt.target.value);
+                  }}
                 />
                 <Button
                   variant="outline-secondary"
@@ -42,7 +89,11 @@ function Login() {
               </div>
             </Form.Group>
 
-            <Button variant="dark" type="submit" className="w-100 mb-3">
+            <Button
+              variant="dark"
+              className="w-100 mb-3"
+              onClick={handleSubmit}
+            >
               Ingresar
             </Button>
             <div>

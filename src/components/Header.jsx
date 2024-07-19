@@ -1,18 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Navbar, Nav, Form, Button } from "react-bootstrap";
+import { Container, Navbar, Nav, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Logo from "../resources/images/Logo.png";
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (loggedInUser) {
+      setUser(JSON.parse(loggedInUser));
+    }
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim() !== "") {
       navigate(`/search?query=${searchTerm}`);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser");
+    setUser(null);
+    navigate("/login");
+    window.location.reload();
   };
 
   return (
@@ -52,12 +67,19 @@ function Header() {
               </Button>
             </Form>
             <Nav>
-              <Nav.Link as={Link} to="/login">
-                <i
-                  className="bi bi-person-circle"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              </Nav.Link>
+              {user ? (
+                <>
+                  <Nav.Link>Bienvenido, {user.nombres}</Nav.Link>
+                  <Nav.Link onClick={handleLogout}>Salir de sesión</Nav.Link>
+                </>
+              ) : (
+                <Nav.Link as={Link} to="/login">
+                  <i
+                    className="bi bi-person-circle"
+                    style={{ fontSize: "1.5rem" }}
+                  ></i>
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
